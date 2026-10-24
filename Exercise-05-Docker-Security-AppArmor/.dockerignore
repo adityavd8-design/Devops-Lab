@@ -1,0 +1,6 @@
+venv
+screenshots
+README.md
+my-apparmor-profile
+*.py
+!app.py

@@ -1,0 +1,34 @@
+#include <tunables/global>
+
+# Profile is named "my-apparmor-profile" so that docker can load it with
+# --security-opt apparmor=my-apparmor-profile
+profile my-apparmor-profile flags=(attach_disconnected,mediate_deleted) {
+    #include <abstractions/base>
+
+    # General file access inside the container (python lives in /usr/local)
+    file,
+
+    # Allow Flask app to bind to port 5000
+    network inet stream,
+    network inet6 stream,
+
+    # Permissions to the application directory
+    /app/** rwk,
+
+    # Deny access to sensitive system files
+    deny /etc/** r,
+    deny /var/** rw,
+
+    # Deny execution of any binaries in /bin or /usr/bin
+    deny /bin/** x,
+    deny /usr/bin/** x,
+
+    # Capability restrictions
+    capability net_bind_service,
+    deny capability sys_admin,
+
+    # Allow docker (runc) to stop the container
+    signal (receive) peer=unconfined,
+    signal (receive) peer=runc,
+    signal (send,receive) peer=my-apparmor-profile,
+}
