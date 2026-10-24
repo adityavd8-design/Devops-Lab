@@ -39,5 +39,3 @@ Each exercise folder has the source files, a `README.md` with the steps I follow
 - AppArmor was enabled in the WSL kernel by adding `kernelCommandLine = apparmor=1 security=apparmor` to `%UserProfile%\.wslconfig` and mounting `securityfs`.
 - Minikube was set to use the docker container runtime (`minikube config set container-runtime docker`) so that `eval $(minikube docker-env)` works.
 
-## Reference
-Exercises are from [SunagP/DevOps-Lab](https://github.com/SunagP/DevOps-Lab/tree/main/Exercises).
