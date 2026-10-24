@@ -1,0 +1,64 @@
+{
+  "overwrite": true,
+  "dashboard": {
+    "uid": "delivery-monitoring",
+    "title": "ZAPPTTO Delivery Monitoring",
+    "tags": ["delivery", "prometheus"],
+    "timezone": "browser",
+    "refresh": "5s",
+    "time": { "from": "now-10m", "to": "now" },
+    "schemaVersion": 39,
+    "panels": [
+      {
+        "id": 1,
+        "type": "timeseries",
+        "title": "Total Deliveries",
+        "gridPos": { "h": 7, "w": 12, "x": 0, "y": 0 },
+        "datasource": { "type": "prometheus", "uid": "ag26l3gw8wvlse" },
+        "targets": [ { "refId": "A", "expr": "total_deliveries", "legendFormat": "total" } ]
+      },
+      {
+        "id": 2,
+        "type": "timeseries",
+        "title": "Pending Deliveries",
+        "gridPos": { "h": 7, "w": 12, "x": 12, "y": 0 },
+        "datasource": { "type": "prometheus", "uid": "ag26l3gw8wvlse" },
+        "fieldConfig": {
+          "defaults": {
+            "color": { "mode": "fixed", "fixedColor": "orange" },
+            "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "red", "value": 10 } ] },
+            "custom": { "thresholdsStyle": { "mode": "line" } }
+          },
+          "overrides": []
+        },
+        "targets": [ { "refId": "A", "expr": "pending_deliveries", "legendFormat": "pending" } ]
+      },
+      {
+        "id": 3,
+        "type": "timeseries",
+        "title": "On-the-Way Deliveries",
+        "gridPos": { "h": 7, "w": 12, "x": 0, "y": 7 },
+        "datasource": { "type": "prometheus", "uid": "ag26l3gw8wvlse" },
+        "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "blue" } }, "overrides": [] },
+        "targets": [ { "refId": "A", "expr": "on_the_way_deliveries", "legendFormat": "on the way" } ]
+      },
+      {
+        "id": 4,
+        "type": "stat",
+        "title": "Average Delivery Time (seconds)",
+        "gridPos": { "h": 7, "w": 12, "x": 12, "y": 7 },
+        "datasource": { "type": "prometheus", "uid": "ag26l3gw8wvlse" },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "s",
+            "decimals": 2,
+            "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "red", "value": 30 } ] }
+          },
+          "overrides": []
+        },
+        "options": { "graphMode": "area", "colorMode": "value", "reduceOptions": { "calcs": ["lastNotNull"] } },
+        "targets": [ { "refId": "A", "expr": "average_delivery_time_sum / average_delivery_time_count", "legendFormat": "avg time" } ]
+      }
+    ]
+  }
+}
